@@ -6,8 +6,6 @@ import Loading from "./Loading";
 import Weather from "./Weather";
 import * as Location from "expo-location";
 import axios from "axios";
-import cheerio from "cheerio";
-
 var number = 1000;
 
 const API_KEY = "445d7c93c775a24741fad3150783fbb8";
@@ -17,12 +15,17 @@ export default class extends React.Component {
     isLoading: true,
   };
   getWeather = async (latitude, longitude) => {
-    const { data } = await axios.get(
+    const {
+      data: {
+        main: { temp },
+        weather,
+      },
+    } = await axios.get(
       `http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&APPID=${API_KEY}&units=metric`
     );
     this.setState({
       isLoading: false,
-      condition: "clear",
+      condition: weather[0].main,
       temp: data.main.temp,
     });
   };
@@ -48,6 +51,10 @@ export default class extends React.Component {
   }
   render() {
     const { isLoading, temp, condition } = this.state;
-    return isLoading ? <Loading /> : <Weather temp={Math.round(temp)} />;
+    return isLoading ? (
+      <Loading />
+    ) : (
+      <Weather temp={Math.round(temp)} condition={condition} />
+    );
   }
 }
