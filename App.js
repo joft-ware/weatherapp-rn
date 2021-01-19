@@ -6,7 +6,7 @@ import Loading from "./Loading";
 import Weather from "./Weather";
 import * as Location from "expo-location";
 import axios from "axios";
-var number = 1000;
+var number = 0;
 
 const API_KEY = "445d7c93c775a24741fad3150783fbb8";
 
@@ -26,7 +26,7 @@ export default class extends React.Component {
     this.setState({
       isLoading: false,
       condition: weather[0].main,
-      temp: data.main.temp,
+      temp,
     });
   };
   getLocation = async () => {
@@ -36,15 +36,10 @@ export default class extends React.Component {
         coords: { latitude, longitude },
       } = await Location.getCurrentPositionAsync();
       this.getWeather(latitude, longitude);
-      this.setState({ isLoading: false });
     } catch (error) {
       Alert.alert("Can't find you.", "sad");
     }
   };
-
-  // getHTML 함수 실행 후 데이터에서
-  // body > main > div > section > ul > li > article > h2 > a
-  // 에 속하는 제목을 titleList에 저장
 
   componentDidMount() {
     this.getLocation();
