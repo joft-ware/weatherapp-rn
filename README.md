@@ -1,2 +1,2 @@
 # weatherapp-rn
-React Native
+Simple weather Application using React Native
